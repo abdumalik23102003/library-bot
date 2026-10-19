@@ -108,6 +108,19 @@ final class Navigator
         Cache::forget(self::key($bot, 'input'));
     }
 
+    /** Boshqa foydalanuvchining (telegram_id) navigatsiya holatini tozalaydi (masalan, qaror qabul qilingach). */
+    public static function resetFor(int $telegramId): void
+    {
+        Cache::forget("tg:{$telegramId}:stack");
+        Cache::forget("tg:{$telegramId}:input");
+    }
+
+    /** Boshqa foydalanuvchining anchor xabar ID si. */
+    public static function anchorOf(int $telegramId): ?int
+    {
+        return Cache::get("tg:{$telegramId}:anchor");
+    }
+
     // ---- Ichki ----------------------------------------------------------------------------------
 
     private static function render(Nutgram $bot, bool $forceNew = false): void
