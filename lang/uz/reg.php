@@ -67,7 +67,7 @@ return [
     ],
 
     'approved' => "🎉 <b>Arizangiz tasdiqlandi!</b>\n\nEndi siz ustozsiz.",
-    'rejected' => "😔 <b>Arizangiz rad etildi.</b>\n\nSiz o'quvchi sifatida foydalanishingiz mumkin. Savollar bo'lsa, admin bilan bog'laning.",
+    'rejected' => "😔 <b>Arizangiz rad etildi.</b>\n\nQayta ariza berish yoki o'quvchi sifatida davom etish uchun /start ni bosing. Savollar bo'lsa, admin bilan bog'laning.",
     'menu_ready' => 'Pastdagi menyudan foydalanishingiz mumkin ⬇️',
 
     'application' => [

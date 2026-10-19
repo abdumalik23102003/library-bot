@@ -51,7 +51,7 @@ final class StaffNotifier
         );
     }
 
-    /** Qarorni ustozning o'ziga yetkazadi: eski anchor xabarini yangilaydi va menyuni beradi. */
+    /** Qarorni ustozning o'ziga yetkazadi. Tasdiqlansa menyu beriladi, rad etilsa menyu berilmaydi. */
     public static function notifyDecision(Nutgram $bot, User $teacher, bool $approved): void
     {
         $chatId = $teacher->telegram_id;
@@ -75,12 +75,16 @@ final class StaffNotifier
 
         Navigator::resetFor($chatId);
 
+        if ($edited && ! $approved) {
+            return;
+        }
+
         try {
             $bot->sendMessage(
                 text: $edited ? __('reg.menu_ready') : $text,
                 chat_id: $chatId,
                 parse_mode: ParseMode::HTML,
-                reply_markup: MainMenu::keyboard(),
+                reply_markup: $approved ? MainMenu::keyboard() : null,
             );
         } catch (Throwable $e) {
             report($e);

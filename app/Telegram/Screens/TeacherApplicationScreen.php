@@ -58,9 +58,10 @@ class TeacherApplicationScreen extends Screen
             $teacher->approved_by = $actor->id;
             $teacher->approved_at = now();
         } else {
-            // Rad etilgan ariza egasi o'quvchi sifatida davom etadi.
+            // Rad etilgan: menyusiz qoladi, /start da rol tanlash qayta chiqadi (ma'lumotlari saqlanadi).
             $teacher->role = Role::Student;
-            $teacher->status = UserStatus::Active;
+            $teacher->status = UserStatus::Pending;
+            $teacher->registered_at = null;
         }
 
         $teacher->save();
