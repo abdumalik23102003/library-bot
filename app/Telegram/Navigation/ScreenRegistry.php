@@ -12,6 +12,7 @@ use App\Telegram\Screens\RegPendingScreen;
 use App\Telegram\Screens\RegProfileScreen;
 use App\Telegram\Screens\RegRoleScreen;
 use App\Telegram\Screens\TeacherApplicationScreen;
+use App\Telegram\Screens\UpScreen;
 
 /**
  * Ekran kaliti -> sinf. Kalitlar faqat kichik lotin harflari (callback_data da ":" ishlatiladi).
@@ -26,6 +27,7 @@ final class ScreenRegistry
         'cats' => CatsScreen::class,
         'cat' => CatScreen::class,
         'catnew' => CatNewScreen::class,
+        'up' => UpScreen::class,
         'regrole' => RegRoleScreen::class,
         'regprofile' => RegProfileScreen::class,
         'regpending' => RegPendingScreen::class,

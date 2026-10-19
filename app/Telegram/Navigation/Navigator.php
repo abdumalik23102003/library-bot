@@ -121,6 +121,27 @@ final class Navigator
         return Cache::get("tg:{$telegramId}:anchor");
     }
 
+    /** Joriy ekranni almashtiradi va anchor xabarni eng pastda YANGI xabar qilib chizadi (eskisi o'chiriladi). */
+    public static function replaceFresh(Nutgram $bot, string $screen, array $params = []): void
+    {
+        $stack = self::stack($bot);
+        array_pop($stack);
+        $stack[] = ['screen' => $screen, 'params' => $params];
+
+        self::saveStack($bot, $stack);
+        self::clearInput($bot);
+
+        if ($old = Cache::get(self::key($bot, 'anchor'))) {
+            try {
+                $bot->deleteMessage(chat_id: $bot->chatId(), message_id: $old);
+            } catch (Throwable) {
+                // e'tibor bermaymiz
+            }
+        }
+
+        self::render($bot, forceNew: true);
+    }
+
     // ---- Ichki ----------------------------------------------------------------------------------
 
     private static function render(Nutgram $bot, bool $forceNew = false): void
@@ -142,6 +163,7 @@ final class Navigator
         }
 
         self::deliver($bot, $screen->render($bot, $top['params']), $forceNew);
+        $screen->mounted($bot, $top['params']);
     }
 
     /** Anchor xabarni tahrirlaydi; iloji bo'lmasa yangisini yuboradi. */

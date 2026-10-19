@@ -22,6 +22,7 @@ class HomeScreen extends Screen
         $rows = [];
 
         if ($user->isTeacher()) {
+            $rows[] = [[__('mat.btn_home'), 'home:upload']];
             $rows[] = [[__('bot.home.btn_cats'), 'home:cats']];
         }
 
@@ -33,10 +34,13 @@ class HomeScreen extends Screen
 
     public function action(Nutgram $bot, string $action, array $args): void
     {
+        $teacher = CurrentUser::get()->isTeacher();
+
         match (true) {
             $action === 'profile' => Navigator::go($bot, 'profile'),
             $action === 'help' => Navigator::go($bot, 'help'),
-            $action === 'cats' && CurrentUser::get()->isTeacher() => Navigator::go($bot, 'cats'),
+            $action === 'cats' && $teacher => Navigator::go($bot, 'cats'),
+            $action === 'upload' && $teacher => Navigator::go($bot, 'up', ['step' => 'file']),
             default => Navigator::refresh($bot),
         };
     }

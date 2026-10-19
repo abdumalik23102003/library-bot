@@ -7,10 +7,11 @@ use App\Telegram\Keyboards\MainMenu;
 use App\Telegram\Support\Chat;
 use App\Telegram\Support\CurrentUser;
 use App\Telegram\Support\Entry;
+use App\Telegram\Support\Incoming;
 use SergiX44\Nutgram\Nutgram;
 
 /**
- * Barcha callback va xabarlarni ekranlarga yo'naltiradi. Xabar turlari (matn, kontakt, keyinroq fayllar) shu yerda ajratiladi.
+ * Barcha callback va xabarlarni ekranlarga yo'naltiradi. Xabar turlari (matn, kontakt, fayl) shu yerda ajratiladi.
  */
 final class Dispatcher
 {
@@ -18,13 +19,11 @@ final class Dispatcher
     {
         $data = (string) $bot->callbackQuery()?->data;
 
-        // Tugma "yuklanmoqda" holatida qolib ketmasin.
         $bot->answerCallbackQuery();
 
         $user = CurrentUser::get();
 
         if ($data === 'b') {
-            // Eskirgan/yo'qolgan holat bo'lsa, boshidan boshlaymiz.
             Navigator::current($bot) === null ? self::restart($bot, $user) : Navigator::back($bot);
 
             return;
@@ -61,6 +60,12 @@ final class Dispatcher
             return;
         }
 
+        if ($file = Incoming::file($message)) {
+            self::file($bot, $user, $file);
+
+            return;
+        }
+
         $text = trim((string) $message?->text);
 
         if ($text === '') {
@@ -71,7 +76,7 @@ final class Dispatcher
 
         $gate = Entry::gate($user);
 
-        // 1) Doimiy (reply) menyu tugmalari - faqat to'liq kirishi bor foydalanuvchilar uchun
+        // 1) Doimiy (reply) menyu tugmalari
         if ($gate === null && ($target = MainMenu::resolve($text, $user))) {
             Navigator::start($bot, $target['screen'], [], $target['parents']);
 
@@ -101,6 +106,30 @@ final class Dispatcher
         }
 
         $bot->sendMessage(__('bot.unknown'));
+    }
+
+    /** Fayl faqat ekran "material" kutayotganda qabul qilinadi. */
+    private static function file(Nutgram $bot, User $user, array $file): void
+    {
+        $pending = Navigator::pendingInput($bot);
+
+        if (! $pending || $pending['field'] !== 'material' || ! Entry::allows($user, $pending['screen'])) {
+            $bot->sendMessage(__('mat.file_hint'));
+
+            return;
+        }
+
+        $screen = ScreenRegistry::make($pending['screen']);
+
+        if ($screen === null) {
+            Navigator::clearInput($bot);
+
+            return;
+        }
+
+        $screen->file($bot, $pending['field'], $file, $pending['params']);
+
+        Chat::delete($bot, $bot->messageId());
     }
 
     /** Telefon kontakti (faqat "phone" maydoni kutilayotganda qabul qilinadi). */

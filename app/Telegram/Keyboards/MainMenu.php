@@ -15,6 +15,7 @@ final class MainMenu
      */
     private const ITEMS = [
         'home' => ['bot.menu.home', 'home', []],
+        'upload' => ['mat.menu', 'up', ['home']],
         'cats' => ['bot.menu.cats', 'cats', ['home']],
         'profile' => ['bot.menu.profile', 'profile', ['home']],
         'help' => ['bot.menu.help', 'help', ['home']],
@@ -24,7 +25,7 @@ final class MainMenu
     private const BY_ROLE = [
         'admin' => ['home', 'profile', 'help'],
         'moderator' => ['home', 'profile', 'help'],
-        'teacher' => ['home', 'cats', 'profile', 'help'],
+        'teacher' => ['home', 'upload', 'cats', 'profile', 'help'],
         'student' => ['home', 'profile', 'help'],
     ];
 
