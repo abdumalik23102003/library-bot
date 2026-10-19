@@ -6,6 +6,8 @@ use App\Telegram\Screens\CatNewScreen;
 use App\Telegram\Screens\CatScreen;
 use App\Telegram\Screens\CatsScreen;
 use App\Telegram\Screens\HelpScreen;
+use App\Telegram\Screens\MatScreen;
+use App\Telegram\Screens\MatsScreen;
 use App\Telegram\Screens\HomeScreen;
 use App\Telegram\Screens\ProfileScreen;
 use App\Telegram\Screens\RegPendingScreen;
@@ -28,6 +30,8 @@ final class ScreenRegistry
         'cat' => CatScreen::class,
         'catnew' => CatNewScreen::class,
         'up' => UpScreen::class,
+        'mats' => MatsScreen::class,
+        'mat' => MatScreen::class,
         'regrole' => RegRoleScreen::class,
         'regprofile' => RegProfileScreen::class,
         'regpending' => RegPendingScreen::class,
