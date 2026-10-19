@@ -2,6 +2,9 @@
 
 namespace App\Telegram\Navigation;
 
+use App\Telegram\Screens\CatNewScreen;
+use App\Telegram\Screens\CatScreen;
+use App\Telegram\Screens\CatsScreen;
 use App\Telegram\Screens\HelpScreen;
 use App\Telegram\Screens\HomeScreen;
 use App\Telegram\Screens\ProfileScreen;
@@ -20,6 +23,9 @@ final class ScreenRegistry
         'home' => HomeScreen::class,
         'help' => HelpScreen::class,
         'profile' => ProfileScreen::class,
+        'cats' => CatsScreen::class,
+        'cat' => CatScreen::class,
+        'catnew' => CatNewScreen::class,
         'regrole' => RegRoleScreen::class,
         'regprofile' => RegProfileScreen::class,
         'regpending' => RegPendingScreen::class,

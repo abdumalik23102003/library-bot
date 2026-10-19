@@ -19,18 +19,24 @@ class HomeScreen extends Screen
             'role' => e($user->role->label()),
         ]);
 
-        // Keyingi bosqichlarda rolga xos tugmalar shu yerga qo'shiladi.
-        return Page::make($text, [
-            [[__('bot.home.btn_profile'), 'home:profile']],
-            [[__('bot.home.btn_help'), 'home:help']],
-        ]);
+        $rows = [];
+
+        if ($user->isTeacher()) {
+            $rows[] = [[__('bot.home.btn_cats'), 'home:cats']];
+        }
+
+        $rows[] = [[__('bot.home.btn_profile'), 'home:profile']];
+        $rows[] = [[__('bot.home.btn_help'), 'home:help']];
+
+        return Page::make($text, $rows);
     }
 
     public function action(Nutgram $bot, string $action, array $args): void
     {
-        match ($action) {
-            'profile' => Navigator::go($bot, 'profile'),
-            'help' => Navigator::go($bot, 'help'),
+        match (true) {
+            $action === 'profile' => Navigator::go($bot, 'profile'),
+            $action === 'help' => Navigator::go($bot, 'help'),
+            $action === 'cats' && CurrentUser::get()->isTeacher() => Navigator::go($bot, 'cats'),
             default => Navigator::refresh($bot),
         };
     }
