@@ -11,6 +11,9 @@ use App\Models\User;
  */
 final class Entry
 {
+    /** Gate dan mustasno ekranlar: ruxsatni ekranning o'zi tekshiradi (tapp = ustoz arizasi tugmalari). */
+    private const OPEN_SCREENS = ['tapp'];
+
     /** @return array{screen: string, parents: array<int, string>}|null  null = to'liq kirish bor */
     public static function gate(User $user): ?array
     {
@@ -31,6 +34,10 @@ final class Entry
 
     public static function allows(User $user, string $screenKey): bool
     {
+        if (in_array($screenKey, self::OPEN_SCREENS, true)) {
+            return true;
+        }
+
         return (self::gate($user) !== null) === str_starts_with($screenKey, 'reg');
     }
 }

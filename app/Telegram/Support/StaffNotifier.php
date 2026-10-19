@@ -35,7 +35,7 @@ final class StaffNotifier
             [__('reg.btn_reject'), "tapp:reject:{$teacher->id}"],
         ]]);
 
-        User::query()->ofRole(Role::Admin, Role::Moderator)->active()->get()->each(
+        DevMode::recipients($teacher)->each(
             function (User $staff) use ($bot, $text, $keyboard) {
                 try {
                     $bot->sendMessage(

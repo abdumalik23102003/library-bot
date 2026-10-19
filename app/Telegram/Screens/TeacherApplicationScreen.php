@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Telegram\Navigation\Page;
 use App\Telegram\Navigation\Screen;
 use App\Telegram\Support\CurrentUser;
+use App\Telegram\Support\DevMode;
 use App\Telegram\Support\StaffNotifier;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -30,7 +31,7 @@ class TeacherApplicationScreen extends Screen
     {
         $actor = CurrentUser::get();
 
-        if (! $actor->isStaff() || ! in_array($action, ['approve', 'reject'], true)) {
+        if (! ($actor->isStaff() || DevMode::active($actor->telegram_id)) || ! in_array($action, ['approve', 'reject'], true)) {
             return;
         }
 

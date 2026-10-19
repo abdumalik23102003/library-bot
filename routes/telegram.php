@@ -7,6 +7,7 @@ use App\Telegram\Middleware\EnsureUser;
 use App\Telegram\Navigation\Dispatcher;
 use App\Telegram\Navigation\Navigator;
 use App\Telegram\Support\CurrentUser;
+use App\Telegram\Support\DevMode;
 use App\Telegram\Support\Entry;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
@@ -36,6 +37,12 @@ $bot->onCommand('start', function (Nutgram $bot) {
 $bot->onCommand('ping', function (Nutgram $bot) {
     $bot->sendMessage('pong 🏓');
 });
+
+// ---- [VAQTINCHALIK] Test rejimi (faqat lokal, faqat ENV admin) ---------------------------------
+
+$bot->onCommand('dev_teacher', fn (Nutgram $bot) => DevMode::enter($bot, null));
+$bot->onCommand('dev_student', fn (Nutgram $bot) => DevMode::enter($bot, null));
+$bot->onCommand('dev_admin', fn (Nutgram $bot) => DevMode::exit($bot));
 
 // ---- Umumiy yo'naltiruvchilar (eng oxirida bo'lishi kerak) --------------------------------------
 

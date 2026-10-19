@@ -6,6 +6,7 @@ use App\Enums\Role;
 use App\Enums\UserStatus;
 use App\Models\User;
 use App\Telegram\Support\CurrentUser;
+use App\Telegram\Support\DevMode;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 
@@ -37,7 +38,7 @@ final class EnsureUser
 
         $user->username = $from->username;
 
-        if ($this->isEnvAdmin($from->id)) {
+        if ($this->isEnvAdmin($from->id) && ! DevMode::active($from->id)) {
             $user->role = Role::Admin;
             $user->status = UserStatus::Active;
             $user->registered_at ??= now();
