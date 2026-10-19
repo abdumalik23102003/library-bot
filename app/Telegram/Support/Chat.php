@@ -2,6 +2,7 @@
 
 namespace App\Telegram\Support;
 
+use App\Telegram\Keyboards\MainMenu;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use Throwable;
@@ -26,6 +27,17 @@ final class Chat
     {
         try {
             $sent = $bot->sendMessage(text: '⌨️', reply_markup: ReplyKeyboardRemove::make(remove_keyboard: true));
+            self::delete($bot, $sent?->message_id);
+        } catch (Throwable) {
+            // e'tibor bermaymiz
+        }
+    }
+
+    /** Joriy foydalanuvchining asosiy menyusini qaytaradi: xizmat xabari yuborib, darhol o'chiradi. */
+    public static function restoreMenu(Nutgram $bot): void
+    {
+        try {
+            $sent = $bot->sendMessage(text: '⌨️', reply_markup: MainMenu::keyboard());
             self::delete($bot, $sent?->message_id);
         } catch (Throwable) {
             // e'tibor bermaymiz

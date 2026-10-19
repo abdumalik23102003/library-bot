@@ -97,4 +97,35 @@ final class DevMode
         $bot->sendMessage(text: '🧪 Test rejimi o\'chirildi. Siz yana adminsiz.', reply_markup: MainMenu::keyboard());
         Navigator::start($bot, 'home');
     }
+    /** Test rejimida tayyor rol bilan ishga tushadi (masalan, moderator yoki tasdiqlangan ustoz menyusini ko'rish uchun). */
+    public static function asRole(Nutgram $bot, Role $role): void
+    {
+        $user = CurrentUser::get();
+
+        if (! self::allowed($user->telegram_id)) {
+            $bot->sendMessage('Bu buyruq faqat lokal muhitda, ENV dagi admin uchun ishlaydi.');
+
+            return;
+        }
+
+        Cache::put("tg:{$user->telegram_id}:dev", true, now()->addDays(30));
+
+        $user->forceFill([
+            'role' => $role,
+            'status' => UserStatus::Active,
+            'registered_at' => $user->registered_at ?? now(),
+            'full_name' => $user->full_name ?: 'Test ' . $role->label(),
+        ]);
+
+        if ($role === Role::Teacher) {
+            $user->subject ??= 'Matematika';
+            $user->bio ??= 'Test ustoz haqida ma\'lumot';
+            $user->phone ??= '+998901234567';
+        }
+
+        $user->save();
+
+        $bot->sendMessage(text: "🧪 Test rejimi: rol - {$role->label()}.\nAdmin holatiga qaytish: /dev_admin", reply_markup: MainMenu::keyboard($user));
+        Navigator::start($bot, 'home');
+    }
 }

@@ -2,6 +2,7 @@
 
 /** @var SergiX44\Nutgram\Nutgram $bot */
 
+use App\Enums\Role;
 use App\Telegram\Keyboards\MainMenu;
 use App\Telegram\Middleware\EnsureUser;
 use App\Telegram\Navigation\Dispatcher;
@@ -43,6 +44,8 @@ $bot->onCommand('ping', function (Nutgram $bot) {
 $bot->onCommand('dev_teacher', fn (Nutgram $bot) => DevMode::enter($bot, null));
 $bot->onCommand('dev_student', fn (Nutgram $bot) => DevMode::enter($bot, null));
 $bot->onCommand('dev_admin', fn (Nutgram $bot) => DevMode::exit($bot));
+$bot->onCommand('dev_moderator', fn (Nutgram $bot) => DevMode::asRole($bot, Role::Moderator));
+$bot->onCommand('dev_ustoz', fn (Nutgram $bot) => DevMode::asRole($bot, Role::Teacher));
 
 // ---- Umumiy yo'naltiruvchilar (eng oxirida bo'lishi kerak) --------------------------------------
 

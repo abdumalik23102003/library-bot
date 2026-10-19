@@ -6,6 +6,7 @@ return [
 
     'menu' => [
         'home' => '🏠 Bosh sahifa',
+        'profile' => '👤 Profil',
         'help' => 'ℹ️ Yordam',
     ],
 
@@ -14,24 +15,16 @@ return [
     ],
 
     'home' => [
-        'text' => "🏠 <b>Bosh sahifa</b>\n\nKerakli bo'limni tanlang:",
+        'text' => "🏠 <b>Bosh sahifa</b>\n\n👤 <b>:name</b>\nRol: :role\n\nKerakli bo'limni tanlang:",
+        'btn_profile' => '👤 Profilim',
         'btn_help' => 'ℹ️ Yordam',
-        'btn_echo' => '🧪 Matn sinovi',
     ],
 
     'help' => [
-        'text' => "ℹ️ <b>Yordam</b>\n\nBu bot ustozlar va o'quvchilar uchun material kutubxonasi.",
-        'btn_more' => '📖 Batafsil',
-    ],
-
-    'help_more' => [
-        'text' => "📖 <b>Batafsil</b>\n\nBu ekran 3-darajada turibdi. 🔙 tugmasi sizni aynan oldingi ekranga qaytaradi.",
-    ],
-
-    'echo' => [
-        'prompt' => "🧪 <b>Matn sinovi</b>\n\nBiror matn yozib yuboring. Natija shu xabarning o'zida yangilanadi.",
-        'result' => "🧪 <b>Matn sinovi</b>\n\nSiz yozdingiz:\n<blockquote>:text</blockquote>",
-        'btn_again' => '✏️ Yana kiritish',
+        'student' => "ℹ️ <b>Yordam</b>\n\nSiz <b>o'quvchi</b>siz. Bu bot ustozlar tayyorlagan materiallar kutubxonasi.\n\n• Ochiq materiallarni qidirish va yuklab olish\n• Ustozga qo'shilish so'rovi yuborish\n• Ustoz ruxsat bersa, yopiq materiallarga kirish\n\nPastdagi menyu har doim ochiq. Adashib qolsangiz, /start bosing.",
+        'teacher' => "ℹ️ <b>Yordam</b>\n\nSiz <b>ustoz</b>siz. Siz quyidagilarni qila olasiz:\n\n• Materiallar yuklash va ularga kirishni belgilash\n• O'z kategoriyalaringizni boshqarish\n• O'quvchilarni qabul qilish va sinflarga ajratish\n\nAdashib qolsangiz, /start bosing.",
+        'moderator' => "ℹ️ <b>Yordam</b>\n\nSiz <b>moderator</b>siz. Siz ustoz arizalarini ko'rib chiqasiz, foydalanuvchilar va ochiq materiallarni boshqarasiz.\n\nAdashib qolsangiz, /start bosing.",
+        'admin' => "ℹ️ <b>Yordam</b>\n\nSiz <b>admin</b>siz. Barcha foydalanuvchilar, materiallar, kategoriyalar va moderatorlar sizning boshqaruvingizda.\n\nAdashib qolsangiz, /start bosing.",
     ],
 
     'unknown' => "Tushunmadim 🤔 Pastdagi tugmalardan foydalaning yoki /start bosing.",

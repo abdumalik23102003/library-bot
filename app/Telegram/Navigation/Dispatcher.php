@@ -72,7 +72,7 @@ final class Dispatcher
         $gate = Entry::gate($user);
 
         // 1) Doimiy (reply) menyu tugmalari - faqat to'liq kirishi bor foydalanuvchilar uchun
-        if ($gate === null && ($target = MainMenu::resolve($text))) {
+        if ($gate === null && ($target = MainMenu::resolve($text, $user))) {
             Navigator::start($bot, $target['screen'], [], $target['parents']);
 
             return;

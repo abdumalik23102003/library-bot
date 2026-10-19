@@ -84,7 +84,7 @@ final class StaffNotifier
                 text: $edited ? __('reg.menu_ready') : $text,
                 chat_id: $chatId,
                 parse_mode: ParseMode::HTML,
-                reply_markup: $approved ? MainMenu::keyboard() : null,
+                reply_markup: $approved ? MainMenu::keyboard($teacher) : null,
             );
         } catch (Throwable $e) {
             report($e);

@@ -10,6 +10,7 @@ use App\Telegram\Navigation\Page;
 use App\Telegram\Navigation\Screen;
 use App\Telegram\Support\Chat;
 use App\Telegram\Support\CurrentUser;
+use App\Telegram\Support\ProfileFields;
 use App\Telegram\Support\StaffNotifier;
 use Illuminate\Support\Str;
 use SergiX44\Nutgram\Nutgram;
@@ -94,7 +95,7 @@ class RegProfileScreen extends Screen
             return;
         }
 
-        [$ok, $value] = $this->validate($field, $text);
+        [$ok, $value] = ProfileFields::validate($field, $text);
 
         if (! $ok) {
             Navigator::replace($bot, 'regprofile', array_filter([
@@ -180,39 +181,5 @@ class RegProfileScreen extends Screen
 
         $bot->sendMessage(text: __('reg.done_student'), reply_markup: MainMenu::keyboard());
         Navigator::start($bot, 'home');
-    }
-
-    /** @return array{0: bool, 1: string} [ok, qiymat yoki xato matni] */
-    private function validate(string $field, string $text): array
-    {
-        $text = trim((string) preg_replace('/\s+/u', ' ', $text));
-        $length = mb_strlen($text);
-
-        return match ($field) {
-            'full_name' => preg_match('/^[\p{L}\p{M}][\p{L}\p{M} \'’ʻʼ`.\-]{2,99}$/u', $text)
-                ? [true, $text]
-                : [false, __('reg.err.full_name')],
-            'subject' => $length >= 2 && $length <= 100
-                ? [true, $text]
-                : [false, __('reg.err.subject')],
-            'bio' => $length >= 5 && $length <= 500
-                ? [true, $text]
-                : [false, __('reg.err.bio')],
-            'phone' => ($phone = $this->normalizePhone($text)) !== null
-                ? [true, $phone]
-                : [false, __('reg.err.phone')],
-            default => [false, __('reg.err.incomplete')],
-        };
-    }
-
-    private function normalizePhone(string $raw): ?string
-    {
-        $digits = (string) preg_replace('/\D+/', '', $raw);
-
-        if (strlen($digits) === 9) {
-            $digits = '998' . $digits;
-        }
-
-        return strlen($digits) >= 11 && strlen($digits) <= 15 ? '+' . $digits : null;
     }
 }

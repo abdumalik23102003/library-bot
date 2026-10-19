@@ -2,10 +2,9 @@
 
 namespace App\Telegram\Navigation;
 
-use App\Telegram\Screens\EchoScreen;
-use App\Telegram\Screens\HelpMoreScreen;
 use App\Telegram\Screens\HelpScreen;
 use App\Telegram\Screens\HomeScreen;
+use App\Telegram\Screens\ProfileScreen;
 use App\Telegram\Screens\RegPendingScreen;
 use App\Telegram\Screens\RegProfileScreen;
 use App\Telegram\Screens\RegRoleScreen;
@@ -20,8 +19,7 @@ final class ScreenRegistry
     private const MAP = [
         'home' => HomeScreen::class,
         'help' => HelpScreen::class,
-        'helpmore' => HelpMoreScreen::class,
-        'echo' => EchoScreen::class,
+        'profile' => ProfileScreen::class,
         'regrole' => RegRoleScreen::class,
         'regprofile' => RegProfileScreen::class,
         'regpending' => RegPendingScreen::class,
