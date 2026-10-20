@@ -15,6 +15,12 @@ use App\Telegram\Screens\RegProfileScreen;
 use App\Telegram\Screens\RegRoleScreen;
 use App\Telegram\Screens\TeacherApplicationScreen;
 use App\Telegram\Screens\UpScreen;
+use App\Telegram\Screens\ReqScreen;
+use App\Telegram\Screens\StuScreen;
+use App\Telegram\Screens\StulScreen;
+use App\Telegram\Screens\StusScreen;
+use App\Telegram\Screens\TchScreen;
+use App\Telegram\Screens\TchsScreen;
 
 /**
  * Ekran kaliti -> sinf. Kalitlar faqat kichik lotin harflari (callback_data da ":" ishlatiladi).
@@ -36,6 +42,12 @@ final class ScreenRegistry
         'regprofile' => RegProfileScreen::class,
         'regpending' => RegPendingScreen::class,
         'tapp' => TeacherApplicationScreen::class,
+        'tchs' => TchsScreen::class,
+        'tch' => TchScreen::class,
+        'stus' => StusScreen::class,
+        'stul' => StulScreen::class,
+        'stu' => StuScreen::class,
+        'req' => ReqScreen::class,
     ];
 
     public static function make(string $key): ?Screen
