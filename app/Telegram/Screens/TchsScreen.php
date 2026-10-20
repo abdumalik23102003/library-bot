@@ -98,7 +98,7 @@ class TchsScreen extends Screen
 
     private function open(Nutgram $bot, int $id): void
     {
-        $exists = User::query()->ofRole(Role::Teacher)->active()->whereKey($id)->exists();
+        $exists = User::query()->ofRole(Role::Teacher)->active()->whereNotNull('registered_at')->whereKey($id)->exists();
 
         $exists ? Navigator::go($bot, 'tch', ['id' => $id]) : Navigator::refresh($bot);
     }

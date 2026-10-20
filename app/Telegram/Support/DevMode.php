@@ -35,6 +35,14 @@ final class DevMode
     {
         $staff = User::query()->ofRole(Role::Admin, Role::Moderator)->active()->get();
 
+        // ENV dagi admin har doim oluvchi (test rejimida roli vaqtincha o'zgargan bo'lsa ham).
+        $adminId = (int) config('library.admin_telegram_id');
+        $envAdmin = $adminId > 0 ? User::query()->where('telegram_id', $adminId)->first() : null;
+
+        if ($envAdmin !== null && ! $envAdmin->isBlocked() && ! $staff->contains('id', $envAdmin->id)) {
+            $staff->push($envAdmin);
+        }
+
         if (self::active($teacher->telegram_id) && ! $staff->contains('id', $teacher->id)) {
             $staff->push($teacher);
         }

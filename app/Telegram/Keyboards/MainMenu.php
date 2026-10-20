@@ -21,6 +21,7 @@ final class MainMenu
         'profile' => ['bot.menu.profile', 'profile', ['home']],
         'teachers' => ['links.menu_teachers', 'tchs', ['home']],
         'students' => ['links.menu_students', 'stus', ['home']],
+        'downloads' => ['search.menu_downloads', 'dls', ['home']],
         'help' => ['bot.menu.help', 'help', ['home']],
     ];
 
@@ -29,7 +30,7 @@ final class MainMenu
         'admin' => ['home', 'profile', 'help'],
         'moderator' => ['home', 'profile', 'help'],
         'teacher' => ['home', 'upload', 'mats', 'students', 'cats', 'profile', 'help'],
-        'student' => ['home', 'teachers', 'profile', 'help'],
+        'student' => ['home', 'teachers', 'downloads', 'profile', 'help'],
     ];
 
     /** @return array<int, string> */

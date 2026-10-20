@@ -12,7 +12,7 @@ final class Pager
     /** @return array{0: Collection, 1: int, 2: int, 3: int}  [elementlar, joriy sahifa, sahifalar soni, jami] */
     public static function slice(Builder $query, int $page, int $perPage = self::PER_PAGE): array
     {
-        $total = (clone $query)->count();
+        $total = (clone $query)->reorder()->count();
         $pages = max(1, (int) ceil($total / $perPage));
         $page = min(max(1, $page), $pages);
 

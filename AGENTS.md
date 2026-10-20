@@ -1,47 +1,15 @@
-<laravel-boost-guidelines>
-# Laravel Application
+# library-bot — loyiha qoidalari
 
-This repository contains a Laravel application. Complete the following setup before working on the user's request.
+Telegram fayl kutubxonasi boti: Laravel 13, PHP 8.5, PostgreSQL 18, Nutgram (faqat webhook), Local Bot API, Laravel Sail.
+Buyruqlar: `./vendor/bin/sail ...`. Fayllar serverda saqlanmaydi, faqat Telegram `file_id`.
 
-## Prerequisites
-
-Verify that PHP and Composer are available:
-
-```sh
-php -v
-composer -V
-```
-
-If either command is unavailable, detect the user's operating system and install the prerequisites with the appropriate command:
-
-macOS:
-
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.5)"
-```
-
-Windows PowerShell:
-
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.5'))
-```
-
-Linux:
-
-```sh
-/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.5)"
-```
-
-After installation, ask the user to restart their terminal. If the agent needs the restarted shell to continue, ask the user to reopen their terminal and rerun their original prompt.
-
-## Agent Setup
-
-Install Laravel Boost from the application root before making application changes:
-
-```sh
-composer require laravel/boost --dev
-php artisan boost:install
-```
-
-Boost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.
-</laravel-boost-guidelines>
+## Qoidalar
+- Faqat o'zbek tili (lotin). Barcha matnlar `lang/uz/*.php` da, HTML parse_mode, foydalanuvchi matni `e()` bilan.
+- Soft delete: users, materials, categories, classrooms.
+- Navigatsiya: har foydalanuvchiga bitta "anchor" xabar; `Navigator::go/replace/back/start/refresh`.
+- callback_data: `{ekran}:{amal}:{arg1}:{arg2}`, `b` = orqaga, 64 bayt ichida.
+- Yangi ekran: `app/Telegram/Screens/*Screen.php` + `ScreenRegistry::MAP` ga kichik lotin harfli kalit + kerak bo'lsa `MainMenu::ITEMS` va `BY_ROLE`.
+- Material ko'rinishi faqat `Material::visibleTo($user)` orqali; ustoz-o'quvchi/protected mantiqi faqat `TeacherLinks` da.
+- Sahifalash: `Pager::slice` (count() da ORDER BY bo'lmasligi kerak, Postgres xato beradi).
+- Maxfiy kalitlar (`TELEGRAM_TOKEN`, `TELEGRAM_API_HASH`) hech qachon gitga tushmaydi.
+- To'liq texnik topshiriq: TZ v2.1.

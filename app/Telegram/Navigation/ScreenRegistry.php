@@ -5,6 +5,7 @@ namespace App\Telegram\Navigation;
 use App\Telegram\Screens\CatNewScreen;
 use App\Telegram\Screens\CatScreen;
 use App\Telegram\Screens\CatsScreen;
+use App\Telegram\Screens\DlsScreen;
 use App\Telegram\Screens\HelpScreen;
 use App\Telegram\Screens\MatScreen;
 use App\Telegram\Screens\MatsScreen;
@@ -16,6 +17,7 @@ use App\Telegram\Screens\RegRoleScreen;
 use App\Telegram\Screens\TeacherApplicationScreen;
 use App\Telegram\Screens\UpScreen;
 use App\Telegram\Screens\ReqScreen;
+use App\Telegram\Screens\SrchScreen;
 use App\Telegram\Screens\StuScreen;
 use App\Telegram\Screens\StulScreen;
 use App\Telegram\Screens\StusScreen;
@@ -48,6 +50,8 @@ final class ScreenRegistry
         'stul' => StulScreen::class,
         'stu' => StuScreen::class,
         'req' => ReqScreen::class,
+        'srch' => SrchScreen::class,
+        'dls' => DlsScreen::class,
     ];
 
     public static function make(string $key): ?Screen

@@ -16,7 +16,7 @@ return [
     ],
 
     'home' => [
-        'text' => "🏠 <b>Bosh sahifa</b>\n\n👤 <b>:name</b>\nRol: :role\n\nKerakli bo'limni tanlang:",
+        'text' => "🏠 <b>Bosh sahifa</b>\n\n👤 <b>:name</b>\nRol: :role\n\n🔎 Material qidirish uchun shunchaki so'z yozing.\n\nKerakli bo'limni tanlang:",
         'btn_profile' => '👤 Profilim',
         'btn_cats' => '📂 Kategoriyalarim',
         'btn_help' => 'ℹ️ Yordam',

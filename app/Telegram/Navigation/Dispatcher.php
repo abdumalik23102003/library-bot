@@ -8,6 +8,7 @@ use App\Telegram\Support\Chat;
 use App\Telegram\Support\CurrentUser;
 use App\Telegram\Support\Entry;
 use App\Telegram\Support\Incoming;
+use Illuminate\Support\Str;
 use SergiX44\Nutgram\Nutgram;
 
 /**
@@ -105,7 +106,34 @@ final class Dispatcher
             return;
         }
 
+        // 4) Oddiy matn = qidiruv (buyruqlar "/" bilan boshlanadi va bu yerga tushmaydi)
+        if ($gate === null && ! str_starts_with($text, '/')) {
+            self::search($bot, $text);
+
+            return;
+        }
+
         $bot->sendMessage(__('bot.unknown'));
+    }
+
+    /** Oddiy matndan qidiruv natijalari ekranini ochadi (allaqachon qidiruvda bo'lsa, almashtiradi). */
+    private static function search(Nutgram $bot, string $text): void
+    {
+        $query = Str::limit(trim($text), 100, '');
+
+        if (mb_strlen($query) < 2) {
+            $bot->sendMessage(__('search.too_short'));
+
+            return;
+        }
+
+        $params = ['q' => $query];
+
+        (Navigator::current($bot)['screen'] ?? null) === 'srch'
+            ? Navigator::replace($bot, 'srch', $params)
+            : Navigator::start($bot, 'srch', $params, ['home']);
+
+        Chat::delete($bot, $bot->messageId());
     }
 
     /** Fayl faqat ekran "material" kutayotganda qabul qilinadi. */

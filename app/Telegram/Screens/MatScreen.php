@@ -12,6 +12,7 @@ use App\Telegram\Navigation\Navigator;
 use App\Telegram\Navigation\Page;
 use App\Telegram\Navigation\Screen;
 use App\Telegram\Support\CurrentUser;
+use App\Telegram\Support\Incoming;
 use App\Telegram\Support\MaterialNotifier;
 use App\Telegram\Support\MaterialSender;
 use Illuminate\Database\Eloquent\Builder;
@@ -53,7 +54,7 @@ class MatScreen extends Screen
                 $lines[] = '⚠️ ' . e($params['error']);
             }
 
-            $lines[] = __("mats.ask.{$ask}", ['max' => config('library.max_upload_mb')]);
+            $lines[] = __("mats.ask.{$ask}", ['max' => Incoming::maxMb()]);
 
             return Page::make(implode("\n", $lines), [[[__('bot.cancel'), "mat:cancel:{$id}"]]]);
         }
@@ -270,7 +271,7 @@ class MatScreen extends Screen
             return;
         }
 
-        $maxMb = (int) config('library.max_upload_mb');
+        $maxMb = Incoming::maxMb();
 
         if ((int) ($file['size'] ?? 0) > $maxMb * 1024 * 1024) {
             $this->show($bot, $id, ['ask' => 'file', 'error' => __('mats.err.too_big', ['max' => $maxMb])]);
