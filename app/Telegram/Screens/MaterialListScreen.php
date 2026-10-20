@@ -39,6 +39,11 @@ abstract class MaterialListScreen extends Screen
             (int) ($params['page'] ?? 1),
         );
 
+        // O'quvchi uchun: ochib bo'lmaydigan (kirishi yo'q protected) materiallar 🔒 bilan belgilanadi.
+        $openable = $user->isStudent()
+            ? Material::query()->visibleTo($user)->whereIn('id', $items->pluck('id'))->pluck('id')->all()
+            : null;
+
         $lines = [];
 
         if (! empty($params['flash'])) {
@@ -60,10 +65,12 @@ abstract class MaterialListScreen extends Screen
         /** @var Material $material */
         foreach ($items as $i => $material) {
             $n = ($page - 1) * Pager::PER_PAGE + $i + 1;
+            $lock = ($openable !== null && ! in_array($material->id, $openable, true)) ? '🔒 ' : '';
 
             $lines[] = sprintf(
-                '%d. %s %s — %s',
+                '%d. %s%s %s — %s',
                 $n,
+                $lock,
                 Str::before($material->type->label(), ' '),
                 e(Str::limit($material->title ?: __('mats.untitled'), 50)),
                 e($material->owner?->displayName() ?? __('search.system')),
@@ -74,6 +81,10 @@ abstract class MaterialListScreen extends Screen
 
         $lines[] = '';
         $lines[] = __('search.pick_hint');
+
+        if ($openable !== null && count($openable) < $items->count()) {
+            $lines[] = __('search.lock_hint');
+        }
 
         $rows = array_chunk($buttons, 4);
 
@@ -108,6 +119,17 @@ abstract class MaterialListScreen extends Screen
     private function open(Nutgram $bot, array $keep, int $page, int $materialId): void
     {
         $result = MaterialDelivery::deliver($bot, CurrentUser::get(), $materialId);
+
+        if ($result === 'locked') {
+            $ownerId = Material::query()->whereKey($materialId)->value('owner_id');
+
+            if ($ownerId !== null) {
+                // Ustoz kartochkasi: qo'shilish va himoyalangan kirish so'rovi shu yerda.
+                Navigator::go($bot, 'tch', ['id' => (int) $ownerId, 'flash' => 'locked']);
+
+                return;
+            }
+        }
 
         Navigator::replace($bot, $this->key(), $keep + ['page' => $page, 'flash' => $result]);
     }

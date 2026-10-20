@@ -102,8 +102,14 @@ class MatScreen extends Screen
             default => [__('mats.btn.replace_file'), "mat:ask:{$id}:file"],
         };
 
+        // Ustoz faqat o'z materialini (private ham) o'quvchilarga yubora oladi.
+        $share = ($actor->isTeacher() && $material->owner_id === $actor->id)
+            ? [[[__('cls.btn_share'), "snd:start:{$id}"]]]
+            : [];
+
         return Page::make($card, [
             [[__('mats.btn.send'), "mat:send:{$id}"]],
+            ...$share,
             [
                 [__('mats.btn.title'), "mat:ask:{$id}:title"],
                 [__('mats.btn.description'), "mat:ask:{$id}:description"],

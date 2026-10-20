@@ -2,6 +2,7 @@
 
 namespace App\Telegram\Support;
 
+use App\Enums\Access;
 use App\Models\Download;
 use App\Models\Material;
 use App\Models\User;
@@ -15,13 +16,17 @@ use Throwable;
  */
 final class MaterialDelivery
 {
-    /** @return string  sent | gone | failed */
+    /** @return string  sent | gone | locked | failed */
     public static function deliver(Nutgram $bot, User $user, int $materialId): string
     {
         $material = Material::query()->visibleTo($user)->find($materialId);
 
         if ($material === null) {
-            return 'gone';
+            // O'quvchi himoyalangan materialni qidiruvda ko'rdi, lekin ustozdan kirish olmagan.
+            $locked = $user->isStudent()
+                && Material::query()->whereKey($materialId)->where('access', Access::Protected->value)->exists();
+
+            return $locked ? 'locked' : 'gone';
         }
 
         try {

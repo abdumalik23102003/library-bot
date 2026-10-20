@@ -5,6 +5,7 @@ return [
     'system' => 'Tizim',
     'too_short' => '🔎 Qidirish uchun kamida 2 ta belgi yozing.',
     'pick_hint' => '👇 Raqamni bosing — material shu chatga yuboriladi.',
+    'lock_hint' => "🔒 — himoyalangan: ochish uchun ustozdan kirish kerak. Raqamni bossangiz, ustoz sahifasi ochiladi.",
 
     'srch' => [
         'title' => '🔎 <b>Qidiruv:</b> «:q» — :total ta (sahifa :page/:pages)',
@@ -18,6 +19,7 @@ return [
 
     'flash' => [
         'sent' => '✅ Material yuborildi.',
+        'locked' => "🔒 Bu material himoyalangan. Ochish uchun ustozdan kirish so'rang.",
         'gone' => "ℹ️ Material topilmadi yoki sizga ruxsat yo'q.",
         'failed' => "⚠️ Materialni yuborib bo'lmadi. Keyinroq urinib ko'ring.",
     ],

@@ -17,7 +17,7 @@ class SrchScreen extends MaterialListScreen
     protected function query(User $user, array $params): Builder
     {
         return Material::query()
-            ->visibleTo($user)
+            ->searchableBy($user)
             ->search((string) ($params['q'] ?? ''))
             ->latest('id');
     }

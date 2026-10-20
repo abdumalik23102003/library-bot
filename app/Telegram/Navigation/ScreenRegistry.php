@@ -3,6 +3,9 @@
 namespace App\Telegram\Navigation;
 
 use App\Telegram\Screens\CatNewScreen;
+use App\Telegram\Screens\ClScreen;
+use App\Telegram\Screens\ClsScreen;
+use App\Telegram\Screens\SndScreen;
 use App\Telegram\Screens\CatScreen;
 use App\Telegram\Screens\CatsScreen;
 use App\Telegram\Screens\DlsScreen;
@@ -52,6 +55,9 @@ final class ScreenRegistry
         'req' => ReqScreen::class,
         'srch' => SrchScreen::class,
         'dls' => DlsScreen::class,
+        'cls' => ClsScreen::class,
+        'cl' => ClScreen::class,
+        'snd' => SndScreen::class,
     ];
 
     public static function make(string $key): ?Screen

@@ -93,6 +93,20 @@ class Material extends Model
         });
     }
 
+    /**
+     * QIDIRUV RO'YXATI: o'quvchi public va protected materiallarni ko'radi (qaysi ustozda nima borligi),
+     * lekin protected ni OCHISH uchun visibleTo() bo'yicha kirish kerak. Private o'quvchiga hech qachon ko'rinmaydi.
+     * Boshqa rollar uchun visibleTo() bilan bir xil.
+     */
+    public function scopeSearchableBy(Builder $query, User $viewer): Builder
+    {
+        if ($viewer->role !== Role::Student) {
+            return $query->visibleTo($viewer);
+        }
+
+        return $query->whereIn('access', [Access::Public->value, Access::Protected->value]);
+    }
+
     /** Sarlavha va tavsif bo'yicha qidiruv (PostgreSQL ILIKE). */
     public function scopeSearch(Builder $query, string $term): Builder
     {

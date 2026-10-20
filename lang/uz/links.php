@@ -64,6 +64,7 @@ return [
         'prot_granted' => '🔓 Himoyalangan kirish berildi.',
         'prot_rejected' => '❌ Kirish so\'rovi rad etildi.',
         'revoked' => '🔒 Himoyalangan kirish qaytarib olindi.',
+        'locked' => "🔒 Bu material himoyalangan. Ochish uchun avval ustozga qo'shiling, so'ng himoyalangan kirish so'rang.",
         'removed' => "🗑 O'quvchi ro'yxatdan chiqarildi.",
     ],
 
