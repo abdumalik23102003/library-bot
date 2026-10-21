@@ -23,13 +23,14 @@ final class MainMenu
         'students' => ['links.menu_students', 'stus', ['home']],
         'classes' => ['cls.menu', 'cls', ['home']],
         'downloads' => ['search.menu_downloads', 'dls', ['home']],
+        'panel' => ['adm.menu', 'adm', ['home']],
         'help' => ['bot.menu.help', 'help', ['home']],
     ];
 
     /** Rol -> menyu bandlari (tartib bilan). */
     private const BY_ROLE = [
-        'admin' => ['home', 'profile', 'help'],
-        'moderator' => ['home', 'profile', 'help'],
+        'admin' => ['home', 'panel', 'profile', 'help'],
+        'moderator' => ['home', 'panel', 'profile', 'help'],
         'teacher' => ['home', 'upload', 'mats', 'students', 'classes', 'cats', 'profile', 'help'],
         'student' => ['home', 'teachers', 'downloads', 'profile', 'help'],
     ];
