@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'menu' => '✉️ Murojaat',
+    'menu' => '✉️ Xabarlar',
     'staff_label' => 'administratsiya',
 
     'btn' => [
@@ -16,11 +16,56 @@ return [
         'reply_to' => '↩️ #:id xabarga javob',
     ],
 
-    'compose' => [
-        'title' => "✉️ <b>Xabar yozish</b>\nKimga: <b>:to</b>",
+    'hub' => [
+        'title' => "✉️ <b>Xabarlar</b>\n\nKimgadir yozing, kelgan xabarlarni ko'ring yoki javob bering.\nO'qilmagan xabarlar: <b>:n</b>",
+        'btn_write' => '✍️ Xabar yozish',
+        'btn_inbox' => '📥 Kelganlar (:n)',
+    ],
+
+    'wr' => [
+        'pick_title' => "✍️ <b>Kimga yozamiz?</b>\nTanlandi: <b>:n</b> ta\nBir nechtasini belgilash mumkin (✅ / ⬜).",
+        'searching' => '🔎 Qidiruv: «:q»',
+        'page_info' => "\nJami: :total · :page/:pages-sahifa",
+        'empty' => "Hozircha yoza oladigan odam yo'q.",
+        'none_found' => 'Hech kim topilmadi.',
+        'f' => [
+            'all' => '👥 Hammasi',
+            'staff' => '🛡 Administratsiya',
+            'teacher' => '🎓 Ustozlar',
+            'student' => "🎒 O'quvchilar",
+        ],
+        'btn_all' => '☑️ Hammasini belgilash (:n)',
+        'btn_none' => '🧹 Tozalash',
+        'btn_search' => '🔎 Qidirish',
+        'btn_search_clear' => '✖️ Qidiruvni olib tashlash',
+        'btn_admin' => '🛡 Administratsiyaga yozish',
+        'btn_next' => '➡️ Davom etish (:n)',
+        'btn_people' => '👥 Qabul qiluvchilar',
+        'btn_edit' => '✏️ Qayta yozish',
+        'btn_send' => '✅ Yuborish (:n)',
+        'btn_again' => '✉️ Yana yozish',
+        'search_ask' => "🔎 Ism yoki username bo'yicha qidiruv matnini yozing.",
+        'compose_title' => "✉️ <b>Xabar yozish</b>\nKimga: <b>:to</b>",
+        'compose_ask' => "Xabaringizni yozing yoki fayl yuboring (rasm, hujjat, video, audio, ovozli xabar).\nMatn :max belgigacha.",
         'quote' => "↩️ <b>#:id</b> xabarga javob:\n«:text»",
         'quote_file' => '📎 fayl',
-        'ask' => "Xabaringizni yozing yoki fayl yuboring (rasm, hujjat, video, audio, ovozli xabar).\nMatn :max belgigacha.",
+        'confirm_title' => "✉️ <b>Yuborishni tasdiqlang</b>\n\n🎯 Kimga: <b>:to</b>\n👥 Soni: <b>:n ta</b>",
+        'queue_note' => "⏳ Qabul qiluvchilar ko'p: xabar navbat orqali yuboriladi, oxirida hisobot keladi.",
+        'no_recipients' => '⚠️ Qabul qiluvchi qolmadi. Qabul qiluvchilarni qayta tanlang.',
+        'label_more' => ':names va yana :n ta',
+        'queued' => "⏳ Navbatga qo'yildi (:n ta qabul qiluvchi).\nYuborish tugagach hisobot keladi.",
+        'report' => "✉️ <b>Xabar yuborish tugadi</b>\n\n✅ Yuborildi: :sent\n⚠️ Yuborilmadi: :failed",
+        'crashed' => "⚠️ Xabarlarni yuborishda xatolik yuz berdi.",
+    ],
+
+    'inb' => [
+        'title' => "📥 <b>Kelgan xabarlar</b>\nJami: :total · :page/:pages-sahifa\n🔵 o'qilmagan · ⚪ o'qilgan\n\nXabarni ochish uchun bosing.",
+        'empty' => "📥 Hozircha xabar yo'q.",
+        'empty_unread' => "📥 O'qilmagan xabar yo'q.",
+        'f_all' => 'Hammasi',
+        'f_unread' => "O'qilmagan (:n)",
+        'btn_read_all' => "✅ Hammasini o'qilgan qilish",
+        'deleted' => "(o'chirilgan foydalanuvchi)",
     ],
 
     'sent' => [
@@ -40,9 +85,11 @@ return [
 
     'bc' => [
         'btn_panel' => '📢 Broadcast',
-        'forbidden' => "⛔ Bu bo'lim faqat admin uchun.",
+        'forbidden' => "⛔ Bu bo'lim faqat admin va moderatorlar uchun.",
         'header' => "📢 <b>Administratsiyadan xabar</b>\n\n",
-        'audience' => "📢 <b>Broadcast</b>\n\nKimga yuboramiz?\n\n👥 Hammaga: <b>:all</b>\n🎓 Ustozlarga: <b>:teacher</b>\n🎒 O'quvchilarga: <b>:student</b>\n🛡 Moderatorlarga: <b>:moderator</b>\n\nFaqat faol foydalanuvchilarga yuboriladi.",
+        'audience' => "📢 <b>Broadcast</b>\n\nKimga yuboramiz?\n",
+        'count_line' => ':label: <b>:n</b>',
+        'audience_note' => 'Faqat faol foydalanuvchilarga yuboriladi.',
         'aud' => [
             'all' => '👥 Hammaga',
             'teacher' => '🎓 Ustozlarga',

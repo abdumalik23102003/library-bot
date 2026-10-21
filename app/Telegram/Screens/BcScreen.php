@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 use SergiX44\Nutgram\Nutgram;
 
 /**
- * Broadcast (faqat admin): auditoriya -> matn/fayl -> tasdiqlash -> navbatga qo'yish.
+ * Broadcast (admin va moderator): auditoriya -> matn/fayl -> tasdiqlash -> navbatga qo'yish.
  * Callback: bc:a:{auditoriya}, bc:edit, bc:go, bc:cancel. params: step (audience|compose|confirm|done), audience, kind, file_id, text, error, n.
  */
 class BcScreen extends Screen
@@ -24,7 +24,7 @@ class BcScreen extends Screen
     {
         $actor = CurrentUser::get();
 
-        if (! $actor->isAdmin()) {
+        if (! $actor->isStaff()) {
             return Page::make(__('msg.bc.forbidden'), back: true);
         }
 
@@ -38,7 +38,7 @@ class BcScreen extends Screen
 
     public function mounted(Nutgram $bot, array $params): void
     {
-        if (($params['step'] ?? '') === 'compose' && CurrentUser::get()->isAdmin()) {
+        if (($params['step'] ?? '') === 'compose' && CurrentUser::get()->isStaff()) {
             Navigator::awaitInput($bot, 'material');
         }
     }
@@ -48,7 +48,7 @@ class BcScreen extends Screen
         $actor = CurrentUser::get();
         $top = Navigator::current($bot);
 
-        if (! $actor->isAdmin() || ($top['screen'] ?? '') !== 'bc') {
+        if (! $actor->isStaff() || ($top['screen'] ?? '') !== 'bc') {
             Navigator::refresh($bot);
 
             return;
@@ -59,7 +59,7 @@ class BcScreen extends Screen
         $audience = (string) ($params['audience'] ?? '');
 
         match (true) {
-            $action === 'a' && $step === 'audience' && Broadcasts::valid((string) ($args[0] ?? '')) => Navigator::replace($bot, 'bc', ['step' => 'compose', 'audience' => $args[0]]),
+            $action === 'a' && $step === 'audience' && Broadcasts::valid((string) ($args[0] ?? ''), $actor) => Navigator::replace($bot, 'bc', ['step' => 'compose', 'audience' => $args[0]]),
             $action === 'edit' && $step === 'confirm' => Navigator::replace($bot, 'bc', ['step' => 'compose', 'audience' => $audience]),
             $action === 'cancel' && $step !== 'audience' => Navigator::replace($bot, 'bc', []),
             $action === 'go' && $step === 'confirm' => $this->go($bot, $actor, $params),
@@ -71,7 +71,7 @@ class BcScreen extends Screen
     {
         $audience = (string) ($params['audience'] ?? '');
 
-        if ($field !== 'material' || ! CurrentUser::get()->isAdmin() || ! Broadcasts::valid($audience)) {
+        if ($field !== 'material' || ! CurrentUser::get()->isStaff() || ! Broadcasts::valid($audience, CurrentUser::get())) {
             Navigator::refresh($bot);
 
             return;
@@ -93,7 +93,7 @@ class BcScreen extends Screen
         $audience = (string) ($params['audience'] ?? '');
         $kind = (string) ($file['type'] ?? '');
 
-        if ($field !== 'material' || ! CurrentUser::get()->isAdmin() || ! Broadcasts::valid($audience)) {
+        if ($field !== 'material' || ! CurrentUser::get()->isStaff() || ! Broadcasts::valid($audience, CurrentUser::get())) {
             Navigator::refresh($bot);
 
             return;
@@ -118,15 +118,18 @@ class BcScreen extends Screen
 
     private function audiencePage(User $actor): Page
     {
-        $counts = [];
+        $lines = [__('msg.bc.audience')];
         $rows = [];
 
-        foreach (Broadcasts::AUDIENCES as $audience) {
-            $counts[$audience] = Broadcasts::count($actor, $audience);
+        foreach (Broadcasts::audiences($actor) as $audience) {
+            $lines[] = __('msg.bc.count_line', ['label' => Broadcasts::label($audience), 'n' => Broadcasts::count($actor, $audience)]);
             $rows[] = [[Broadcasts::label($audience), "bc:a:{$audience}"]];
         }
 
-        return Page::make(__('msg.bc.audience', $counts), $rows, back: true);
+        $lines[] = '';
+        $lines[] = __('msg.bc.audience_note');
+
+        return Page::make(implode("\n", $lines), $rows, back: true);
     }
 
     private function composePage(User $actor, array $params): Page
@@ -180,7 +183,7 @@ class BcScreen extends Screen
     private function go(Nutgram $bot, User $actor, array $params): void
     {
         $audience = (string) ($params['audience'] ?? '');
-        $n = Broadcasts::valid($audience) ? Broadcasts::count($actor, $audience) : 0;
+        $n = Broadcasts::valid($audience, CurrentUser::get()) ? Broadcasts::count($actor, $audience) : 0;
 
         if ($n === 0) {
             Navigator::refresh($bot);

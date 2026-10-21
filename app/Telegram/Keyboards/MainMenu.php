@@ -30,8 +30,8 @@ final class MainMenu
 
     /** Rol -> menyu bandlari (tartib bilan). */
     private const BY_ROLE = [
-        'admin' => ['home', 'panel', 'profile', 'help'],
-        'moderator' => ['home', 'panel', 'profile', 'help'],
+        'admin' => ['home', 'panel', 'contact', 'profile', 'help'],
+        'moderator' => ['home', 'panel', 'contact', 'profile', 'help'],
         'teacher' => ['home', 'upload', 'mats', 'students', 'classes', 'cats', 'profile', 'contact', 'help'],
         'student' => ['home', 'teachers', 'downloads', 'profile', 'contact', 'help'],
     ];

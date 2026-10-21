@@ -37,7 +37,7 @@ class SendBroadcast implements ShouldQueue
     {
         $admin = User::query()->find($this->adminId);
 
-        if ($admin === null || ! $admin->isAdmin() || ! $admin->isActive() || ! Broadcasts::valid($this->audience)) {
+        if ($admin === null || ! $admin->isStaff() || ! $admin->isActive() || ! Broadcasts::valid($this->audience, $admin)) {
             return;
         }
 

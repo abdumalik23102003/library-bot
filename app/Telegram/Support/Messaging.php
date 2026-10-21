@@ -27,14 +27,14 @@ final class Messaging
     /** Xodim bo'lmagan foydalanuvchi bir soatda ko'pi bilan shuncha xabar yubora oladi. */
     public const HOURLY_LIMIT = 10;
 
-    /** Kim kimga yoza oladi: xodim istalgan ro'yxatdan o'tgan foydalanuvchiga, boshqalar faqat faol xodimga. */
+    /** Kim kimga yoza oladi: qoidalar MessageTargets::pool() da. */
     public static function canWrite(User $from, User $to): bool
     {
         if ($from->id === $to->id || ! $from->isActive() || $from->registered_at === null || $to->registered_at === null) {
             return false;
         }
 
-        return $from->isStaff() || ($to->isStaff() && $to->isActive());
+        return MessageTargets::allows($from, $to);
     }
 
     /** Murojaatlar boradigan xodimlar: admin va faol moderatorlar. */

@@ -98,7 +98,7 @@ class UsrScreen extends Screen
             'del' => $this->show($bot, $id, ['confirm' => true]),
             'delyes' => $this->delete($bot, $actor, $target),
             'mats' => Navigator::go($bot, 'amats', ['owner' => $id]),
-            'msg' => Messaging::canWrite($actor, $target) ? Navigator::go($bot, 'msg', ['to' => $id]) : $this->show($bot, $id),
+            'msg' => Messaging::canWrite($actor, $target) ? Navigator::go($bot, 'wr', ['to' => $id]) : $this->show($bot, $id),
             'cancel' => $this->show($bot, $id),
             default => $this->show($bot, $id),
         };
