@@ -3,6 +3,8 @@
 namespace App\Telegram\Navigation;
 
 use App\Telegram\Screens\AdmScreen;
+use App\Telegram\Screens\BcScreen;
+use App\Telegram\Screens\MsgScreen;
 use App\Telegram\Screens\AudScreen;
 use App\Telegram\Screens\DcatScreen;
 use App\Telegram\Screens\DcatnewScreen;
@@ -80,6 +82,8 @@ final class ScreenRegistry
         'dcatnew' => DcatnewScreen::class,
         'aud' => AudScreen::class,
         'set' => SetScreen::class,
+        'msg' => MsgScreen::class,
+        'bc' => BcScreen::class,
     ];
 
     public static function make(string $key): ?Screen

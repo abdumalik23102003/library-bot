@@ -23,6 +23,7 @@ return [
             'category_updated' => '✏️ standart kategoriyani yangiladi',
             'category_deleted' => "🗑 standart kategoriyani o'chirdi",
             'setting_updated' => "⚙️ sozlamani o'zgartirdi",
+            'broadcast_sent' => '📢 broadcast yubordi',
         ],
     ],
 

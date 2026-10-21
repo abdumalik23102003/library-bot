@@ -32,6 +32,7 @@ class AdmScreen extends Screen
         if ($actor->isAdmin()) {
             $rows[] = [[__('adm.panel.btn_mods'), 'adm:mods']];
             $rows[] = [[__('sys.btn_audit'), 'adm:aud'], [__('sys.btn_settings'), 'adm:set']];
+            $rows[] = [[__('msg.bc.btn_panel'), 'adm:bc']];
         }
 
         return Page::make(__('adm.panel.title', $s), $rows, back: true);
@@ -55,6 +56,7 @@ class AdmScreen extends Screen
             $action === 'dcats' => Navigator::go($bot, 'dcats'),
             $action === 'aud' && $actor->isAdmin() => Navigator::go($bot, 'aud'),
             $action === 'set' && $actor->isAdmin() => Navigator::go($bot, 'set'),
+            $action === 'bc' && $actor->isAdmin() => Navigator::go($bot, 'bc'),
             default => Navigator::refresh($bot),
         };
     }

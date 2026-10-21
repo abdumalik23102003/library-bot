@@ -24,6 +24,7 @@ final class MainMenu
         'classes' => ['cls.menu', 'cls', ['home']],
         'downloads' => ['search.menu_downloads', 'dls', ['home']],
         'panel' => ['adm.menu', 'adm', ['home']],
+        'contact' => ['msg.menu', 'msg', ['home']],
         'help' => ['bot.menu.help', 'help', ['home']],
     ];
 
@@ -31,8 +32,8 @@ final class MainMenu
     private const BY_ROLE = [
         'admin' => ['home', 'panel', 'profile', 'help'],
         'moderator' => ['home', 'panel', 'profile', 'help'],
-        'teacher' => ['home', 'upload', 'mats', 'students', 'classes', 'cats', 'profile', 'help'],
-        'student' => ['home', 'teachers', 'downloads', 'profile', 'help'],
+        'teacher' => ['home', 'upload', 'mats', 'students', 'classes', 'cats', 'profile', 'contact', 'help'],
+        'student' => ['home', 'teachers', 'downloads', 'profile', 'contact', 'help'],
     ];
 
     /** @return array<int, string> */

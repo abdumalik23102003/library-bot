@@ -4,6 +4,7 @@ namespace App\Telegram\Support;
 
 use App\Models\Material;
 use App\Models\User;
+use App\Telegram\Navigation\Kb;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use Throwable;
@@ -30,6 +31,9 @@ final class MaterialNotifier
                 ]),
                 chat_id: $owner->telegram_id,
                 parse_mode: ParseMode::HTML,
+                reply_markup: Messaging::canWrite($owner, $actor)
+                    ? Kb::inline([[[__('msg.btn.write_actor'), "msg:to:{$actor->id}"]]])
+                    : null,
             );
 
             if ($what !== 'deleted') {
