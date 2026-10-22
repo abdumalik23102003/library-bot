@@ -20,7 +20,11 @@ final class Dispatcher
     {
         $data = (string) $bot->callbackQuery()?->data;
 
-        $bot->answerCallbackQuery();
+        // Eski (muddati o'tgan) tugma bosilsa Telegram xato qaytaradi: bu amalni to'xtatmasligi kerak.
+        try {
+            $bot->answerCallbackQuery();
+        } catch (\Throwable) {
+        }
 
         $user = CurrentUser::get();
 
