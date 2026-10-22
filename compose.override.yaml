@@ -7,7 +7,7 @@ services:
             TELEGRAM_API_HASH: '${TELEGRAM_API_HASH}'
             TELEGRAM_LOCAL: '1'
         ports:
-            - '${FORWARD_TELEGRAM_API_PORT:-8081}:8081'
+            - '127.0.0.1:${FORWARD_TELEGRAM_API_PORT:-8081}:8081'
         volumes:
             - 'sail-telegram-bot-api:/var/lib/telegram-bot-api'
         networks:

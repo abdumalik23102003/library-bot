@@ -19,6 +19,7 @@ return [
             'user_moderator_added' => '🛡 moderator qildi',
             'user_moderator_removed' => '↩️ moderatorlikdan oldi',
             'user_deleted' => "🗑 foydalanuvchini o'chirdi",
+            'user_self_deleted' => "🗑 o'z profilini o'chirdi",
             'category_created' => '➕ standart kategoriya yaratdi',
             'category_updated' => '✏️ standart kategoriyani yangiladi',
             'category_deleted' => "🗑 standart kategoriyani o'chirdi",

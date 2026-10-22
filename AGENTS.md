@@ -13,3 +13,9 @@ Buyruqlar: `./vendor/bin/sail ...`. Fayllar serverda saqlanmaydi, faqat Telegram
 - Sahifalash: `Pager::slice` (count() da ORDER BY bo'lmasligi kerak, Postgres xato beradi).
 - Maxfiy kalitlar (`TELEGRAM_TOKEN`, `TELEGRAM_API_HASH`) hech qachon gitga tushmaydi.
 - To'liq texnik topshiriq: TZ v2.1.
+
+## Qoidalar (yangilangan)
+- Qidiruvda o'quvchi public va protected ni ko'radi (`Material::scopeSearchableBy`), ochish faqat `visibleTo` orqali. Private o'quvchiga ko'rinmaydi.
+- Ustoz yuborishi (`ShareMaterial`, `material_shares`) faqat yetkazadi, kirish bermaydi; private ham yuborilishi mumkin.
+- Profil o'chirilsa (`AccountReset`), foydalanuvchi `/start` da `EnsureUser` orqali toza holatda tiklanadi va qaytadan ro'yxatdan o'tadi.
+- Katta yuborishlar navbatda (`queue:work` ishlab turishi shart); kichiklari (<= `MessageTargets::SYNC_LIMIT`) darhol.

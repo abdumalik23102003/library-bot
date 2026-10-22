@@ -9,6 +9,7 @@ use App\Telegram\Navigation\Page;
 use App\Telegram\Navigation\Screen;
 use App\Telegram\Support\Broadcasts;
 use App\Telegram\Support\CurrentUser;
+use App\Telegram\Support\MessageTargets;
 use App\Telegram\Support\Messaging;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -31,7 +32,7 @@ class BcScreen extends Screen
         return match ($params['step'] ?? 'audience') {
             'compose' => $this->composePage($actor, $params),
             'confirm' => $this->confirmPage($actor, $params),
-            'done' => Page::make(__('msg.bc.queued', ['n' => (int) ($params['n'] ?? 0)]), back: true),
+            'done' => Page::make(__(! empty($params['sync']) ? 'msg.bc.sent_now' : 'msg.bc.queued', ['n' => (int) ($params['n'] ?? 0)]), back: true),
             default => $this->audiencePage($actor),
         };
     }
@@ -197,10 +198,15 @@ class BcScreen extends Screen
 
         $key = 'broadcast:' . $actor->id . ':' . md5(json_encode([$audience, $kind, $fileId, $text]));
 
+        // Kichik auditoriya darhol yuboriladi (navbat ishchisi shart emas), kattasi navbat orqali.
+        $sync = $n <= MessageTargets::SYNC_LIMIT;
+
         if (Cache::add($key, true, now()->addSeconds(30))) {
-            SendBroadcast::dispatch($actor->id, $audience, $kind, $fileId, $text);
+            $sync
+                ? SendBroadcast::dispatchSync($actor->id, $audience, $kind, $fileId, $text)
+                : SendBroadcast::dispatch($actor->id, $audience, $kind, $fileId, $text);
         }
 
-        Navigator::replace($bot, 'bc', ['step' => 'done', 'n' => $n]);
+        Navigator::replace($bot, 'bc', ['step' => 'done', 'n' => $n, 'sync' => $sync]);
     }
 }

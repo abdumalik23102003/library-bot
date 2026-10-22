@@ -18,6 +18,12 @@ class CheckAccessRules extends Command
 
     public function handle(): int
     {
+        if (! class_exists(\Faker\Factory::class)) {
+            $this->error('Faker (require-dev) o\'rnatilmagan: bu buyruq faqat dev muhitda ishlaydi.');
+
+            return self::FAILURE;
+        }
+
         DB::beginTransaction();
 
         try {

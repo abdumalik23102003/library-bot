@@ -7,6 +7,7 @@ use App\Models\Message;
 use App\Models\User;
 use App\Telegram\Navigation\Kb;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
@@ -121,7 +122,8 @@ final class Messaging
                     self::keyboard($message, $from, $to),
                 ));
                 $sent++;
-            } catch (Throwable) {
+            } catch (Throwable $e) {
+                Log::warning('Xabar yetkazilmadi', ['to' => $to->id, 'error' => $e->getMessage()]);
                 $message->delete();
                 $failed++;
             }

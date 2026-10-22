@@ -8,6 +8,8 @@ use App\Telegram\Support\Broadcasts;
 use App\Telegram\Support\Messaging;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
 use Throwable;
@@ -44,14 +46,17 @@ class SendBroadcast implements ShouldQueue
         $caption = __('msg.bc.header') . e($this->text);
         $sent = 0;
         $failed = 0;
+        $reason = null;
 
-        Broadcasts::recipients($admin, $this->audience)->chunkById(100, function ($users) use ($bot, $caption, &$sent, &$failed) {
+        Broadcasts::recipients($admin, $this->audience)->chunkById(100, function ($users) use ($bot, $caption, &$sent, &$failed, &$reason) {
             foreach ($users as $user) {
                 try {
                     Messaging::attempt(fn () => Messaging::push($bot, $user->telegram_id, $this->kind, $this->fileId, $caption));
                     $sent++;
-                } catch (Throwable) {
+                } catch (Throwable $e) {
                     $failed++;
+                    $reason ??= Str::limit($e->getMessage(), 160);
+                    Log::warning('Broadcast yuborilmadi', ['user' => $user->id, 'error' => $e->getMessage()]);
                 }
 
                 // Telegram chegarasi (~30 xabar/soniya) dan ancha past turamiz.
@@ -65,11 +70,17 @@ class SendBroadcast implements ShouldQueue
             'failed' => $failed,
         ]);
 
-        $this->notify($bot, $admin, __('msg.bc.report', [
+        $report = __('msg.bc.report', [
             'aud' => Broadcasts::label($this->audience),
             'sent' => $sent,
             'failed' => $failed,
-        ]));
+        ]);
+
+        if ($reason !== null) {
+            $report .= "\n\n" . __('msg.bc.reason', ['reason' => e($reason)]);
+        }
+
+        $this->notify($bot, $admin, $report);
     }
 
     public function failed(Throwable $e): void

@@ -5,6 +5,7 @@ namespace App\Telegram\Middleware;
 use App\Enums\Role;
 use App\Enums\UserStatus;
 use App\Models\User;
+use App\Telegram\Support\AccountReset;
 use App\Telegram\Support\CurrentUser;
 use App\Telegram\Support\DevMode;
 use SergiX44\Nutgram\Nutgram;
@@ -25,10 +26,10 @@ final class EnsureUser
 
         $user = User::withTrashed()->firstOrNew(['telegram_id' => $from->id]);
 
+        // O'chirilgan profil: foydalanuvchi qaytib kelsa, toza holatda qaytadan ro'yxatdan o'tadi.
         if ($user->trashed()) {
-            $this->deny($bot, __('reg.deleted'), __('reg.deleted'));
-
-            return;
+            $user->restore();
+            AccountReset::fresh($user);
         }
 
         if (! $user->exists) {

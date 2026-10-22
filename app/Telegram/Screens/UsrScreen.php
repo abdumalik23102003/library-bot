@@ -145,9 +145,14 @@ class UsrScreen extends Screen
 
     private function delete(Nutgram $bot, User $actor, User $target): void
     {
-        UserAdmin::delete($actor, $target)
-            ? Navigator::back($bot)
-            : $this->show($bot, $target->id, ['flash' => 'invalid']);
+        if (! UserAdmin::delete($actor, $target)) {
+            $this->show($bot, $target->id, ['flash' => 'invalid']);
+
+            return;
+        }
+
+        UserAdmin::notify($bot, $target, 'deleted');
+        Navigator::back($bot);
     }
 
     private function card(User $target): string

@@ -58,7 +58,7 @@ return [
         'stats_teacher' => "📚 Materiallar: <b>:materials</b> · 👥 O'quvchilar: <b>:students</b>",
         'stats_student' => "🎓 Ustozlari: <b>:teachers</b> · 📥 Yuklab olgan: <b>:downloads</b>",
         'ask_reason' => "🚫 Bloklash sababini yozing (foydalanuvchiga ko'rsatiladi).\n\nSababsiz bloklash uchun «-» yozing.",
-        'confirm_delete' => "🗑 <b>:name</b> hisobini o'chirishni tasdiqlaysizmi?\n\nU botdan foydalana olmaydi. Uning materiallari saqlanib qoladi.",
+        'confirm_delete' => "🗑 <b>:name</b> profilini o'chirishni tasdiqlaysizmi?\n\nAloqalari, sinflari va yuklab olish tarixi tozalanadi, materiallari saqlanib qoladi. Foydalanuvchi /start bosib qaytadan ro'yxatdan o'tishi mumkin.",
         'btn_block' => '🚫 Bloklash',
         'btn_unblock' => '✅ Blokdan chiqarish',
         'btn_mod' => '🛡 Moderator qilish',
@@ -82,6 +82,7 @@ return [
         'unblocked' => '✅ Hisobingiz blokdan chiqarildi. Botdan yana foydalanishingiz mumkin.',
         'mod_added' => "🛡 Siz moderator etib tayinlandingiz. Pastdagi menyudan «Boshqaruv» bo'limiga kiring.",
         'mod_removed' => "ℹ️ Moderatorlik vazifangiz olib tashlandi. Endi siz o'quvchi sifatida foydalanasiz.",
+        'deleted' => "🗑 Profilingiz administratsiya tomonidan o'chirildi.\n\nQaytadan ro'yxatdan o'tish uchun /start bosing.",
     ],
 
     'amats' => [

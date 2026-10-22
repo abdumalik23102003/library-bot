@@ -106,5 +106,7 @@ return [
         'queued' => "⏳ Navbatga qo'yildi (:n ta foydalanuvchi).\nYuborish tugagach hisobot keladi — kutib o'tirishingiz shart emas.",
         'report' => "📢 <b>Broadcast tugadi</b>\n\n🎯 :aud\n✅ Yuborildi: :sent\n⚠️ Yuborilmadi: :failed (botni to'xtatganlar)",
         'crashed' => "⚠️ Broadcast yuborishda xatolik yuz berdi. Loglarni tekshiring.",
+        'sent_now' => "✅ Yuborildi (:n ta foydalanuvchi). Hisobot alohida xabar bilan keladi.",
+        'reason' => 'ℹ️ Xato sababi: :reason',
     ],
 ];

@@ -6,11 +6,14 @@ use App\Models\User;
 use App\Telegram\Navigation\Navigator;
 use App\Telegram\Navigation\Page;
 use App\Telegram\Navigation\Screen;
+use App\Telegram\Support\AccountReset;
 use App\Telegram\Support\Chat;
 use App\Telegram\Support\CurrentUser;
 use App\Telegram\Support\ProfileFields;
 use Illuminate\Support\Str;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 
@@ -52,6 +55,13 @@ class ProfileScreen extends Screen
             $lines[] = '';
         }
 
+        if (! empty($params['confirm']) && ! $user->isStaff()) {
+            return Page::make(__('profile.delete_confirm'), [[
+                [__('profile.btn_delete_yes'), 'profile:delyes'],
+                [__('profile.btn_delete_no'), 'profile:cancel'],
+            ]]);
+        }
+
         if ($ask !== null && in_array($ask, $fields, true)) {
             $lines[] = __("reg.ask.{$ask}");
 
@@ -62,7 +72,13 @@ class ProfileScreen extends Screen
 
         $edit = array_map(fn (string $f) => [__("reg.edit.{$f}"), "profile:ask:{$f}"], $fields);
 
-        return Page::make(implode("\n", $lines), array_chunk($edit, 2), back: true);
+        $rows = array_chunk($edit, 2);
+
+        if (! $user->isStaff()) {
+            $rows[] = [[__('profile.btn_delete'), 'profile:del']];
+        }
+
+        return Page::make(implode("\n", $lines), $rows, back: true);
     }
 
     public function action(Nutgram $bot, string $action, array $args): void
@@ -70,6 +86,8 @@ class ProfileScreen extends Screen
         match ($action) {
             'ask' => $this->ask($bot, CurrentUser::get(), (string) ($args[0] ?? '')),
             'cancel' => $this->cancel($bot),
+            'del' => CurrentUser::get()->isStaff() ? Navigator::refresh($bot) : Navigator::replace($bot, 'profile', ['confirm' => true]),
+            'delyes' => $this->deleteProfile($bot, CurrentUser::get()),
             default => Navigator::refresh($bot),
         };
     }
@@ -130,6 +148,28 @@ class ProfileScreen extends Screen
 
         Navigator::replace($bot, 'profile', $params);
         Navigator::awaitInput($bot, $field);
+    }
+
+    /** Profilni o'chiradi: bog'langan holat tozalanadi, foydalanuvchi /start bilan qaytadan ro'yxatdan o'tadi. */
+    private function deleteProfile(Nutgram $bot, User $user): void
+    {
+        if ($user->isStaff()) {
+            Navigator::refresh($bot);
+
+            return;
+        }
+
+        $anchor = $bot->callbackQuery()?->message?->message_id;
+
+        AccountReset::deleteSelf($user);
+
+        Chat::delete($bot, $anchor);
+
+        $bot->sendMessage(
+            text: __('profile.deleted'),
+            parse_mode: ParseMode::HTML,
+            reply_markup: ReplyKeyboardRemove::make(remove_keyboard: true),
+        );
     }
 
     private function cancel(Nutgram $bot): void

@@ -16,6 +16,7 @@ use App\Telegram\Navigation\Navigator;
 use Illuminate\Database\Eloquent\Builder;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 use Throwable;
 
 /**
@@ -140,6 +141,7 @@ final class UserAdmin
         }
 
         AuditLog::record($actor, 'user.deleted', $target);
+        AccountReset::wipe($target);
         $target->delete();
 
         return true;
@@ -217,7 +219,9 @@ final class UserAdmin
                 text: __("adm.notify.{$kind}", ['reason' => e($reason !== '' ? $reason : '—')]),
                 chat_id: $target->telegram_id,
                 parse_mode: ParseMode::HTML,
-                reply_markup: $withMenu ? MainMenu::keyboard($target) : null,
+                reply_markup: $withMenu
+                    ? MainMenu::keyboard($target)
+                    : ($kind === 'deleted' ? ReplyKeyboardRemove::make(remove_keyboard: true) : null),
             );
         } catch (Throwable $e) {
             report($e);
